@@ -43,6 +43,7 @@ colorDict = {
     }
     
 deDict = {
+    'unity-settings-': 'Unity',
     'cinnamon-sessio': 'Cinnamon',
     'gnome-session': 'GNOME',
     'mate-session': 'MATE',
