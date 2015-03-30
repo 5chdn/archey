@@ -423,13 +423,13 @@ class RAM:
         if dist == 'FreeBSD':
             raminfo = Popen(['vmstat'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
             ram = raminfo[2].split()
-            used = int(ram[3])//1000
-            total = int(ram[4])//1000
+            used = int(ram[3])//1024
+            total = int(ram[4])//1024
         elif dist == 'Cygwin':
             p0 = Popen(['sed', '-e', '1,2!d', '/proc/meminfo'],stdout=PIPE)
             p1 = Popen(['awk', '{print $2}'], stdin=p0.stdout, stdout=PIPE).communicate()[0].decode("Utf-8").split('\n')
-            total = int(p1[0])//1000
-            free = int(p1[1])//1000
+            total = int(p1[0])//1024
+            free = int(p1[1])//1024
             used = (total-free)
         else:
             raminfo = Popen(['free', '-m'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
