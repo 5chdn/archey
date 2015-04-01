@@ -39,7 +39,7 @@ colorDict = {
     'Fedora': ['\x1b[1;37m', '\x1b[1;34m', '\x1b[0;34m'],
     'openSUSE project': ['\x1b[1;37m', '\x1b[1;32m'],
     'Cygwin': ['\x1b[1;32m', '\x1b[1;30m'],
-    'OpenBSD': ['\x1b[0;31m', '\x1b[1;31m', '\x1b[0;33m'],
+    'OpenBSD': ['\x1b[1;33m', '\x1b[1;33m', '\x1b[0;33m'],
     'Sensors': ['\x1b[1;31m', '\x1b[1;32m', '\x1b[1;33m'],
     'Clear': ['\x1b[0m']
     }
@@ -454,7 +454,7 @@ class Packages:
 
 class CPU:
     def __init__(self):
-        if dist == 'FreeBSD':
+        if dist == 'FreeBSD' or dist == 'OpenBSD':
             file = Popen(['sysctl', '-n','hw'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
             cpuinfo = re.sub('  +', ' ', file[1].replace('model name\t: ', '').rstrip('\n'))
         else:
