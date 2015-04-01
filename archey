@@ -35,6 +35,7 @@ colorDict = {
     'Debian': ['\x1b[0;31m', '\x1b[1;31m'],
     'LinuxMint': ['\x1b[1;37m', '\x1b[1;32m'],
     'CrunchBang': ['\x1b[1;37m','\x1b[1;37m'],
+    'Gentoo': ['\x1b[1;35m','\x1b[1;37m'],
     'Fedora': ['\x1b[1;37m', '\x1b[1;34m', '\x1b[0;34m'],
     'openSUSE project': ['\x1b[1;37m', '\x1b[1;32m'],
     'Cygwin': ['\x1b[1;32m', '\x1b[1;30m'],
@@ -252,9 +253,28 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[1]}   `%%%%%%%%%%%%%%%%%%%
 {color[1]}     %%%%%%%%%%%%%%%%%
 \x1b[0m'''
-}
-
-
+,'Gentoo':'''{color[0]}
+{color[0]}        __q@@@@m             {results[0]}
+{color[0]}      _q@@@@@@@@@@_          {results[1]}
+{color[0]}     _@@@@@@@@@@@@@@m        {results[2]}
+{color[0]}    q@@@@@@@@@@@@@@@@@_      {results[3]}
+{color[0]}   _@@@@@@@@@@##@@@@@@@h     {results[4]}
+{color[0]}   @@@@@@@@@@@ ##@@@@@@@@_   {results[5]}
+{color[0]}   7##@@@@@@@___@@@@@@@@@@,  {results[6]}
+{color[0]}     ####@@@@@@@@@@@@@@@@@@  {results[7]}
+{color[0]}       ####@@@@@@@@@@@@@@@@  {results[8]}
+{color[0]}        q@@@@@@@@@@@@@@@@#W  {results[9]}
+{color[0]}       q@@@@@@@@@@@@@@@@@@/  {results[10]}
+{color[0]}     _@@@@@@@@@@@@@@@@#@@    {results[11]}
+{color[0]}    q@@@@@@@@@@@@@@@#@##^    {results[12]}
+{color[0]}   m#@@@@@@@@@@@@@@#@#W     
+{color[0]}  _q@@@@@@@@@@@@@#@#*>      
+{color[0]}   p@@@@@@@@@@@#@##%        
+{color[0]}    _##@@@@@##@#@#g         
+{color[0]}      _#@@@@@@#@@           
+{color[0]}        _p@@@@q 
+\x1b[0m'''                             
+}         
 dist = ''
 if os.path.exists('/bin/freebsd-version'):
     dist = 'FreeBSD'
@@ -385,6 +405,8 @@ class Packages:
             p1 = Popen(['pkg', 'info'], stdout=PIPE).communicate()[0].decode("Utf-8")
         elif dist == 'Arch':
             p1 = Popen(['pacman', '-Q'], stdout=PIPE).communicate()[0].decode("Utf-8")
+        elif dist == 'Gentoo':
+            p1 = Popen(['equery', 'list', '*'], stdout=PIPE).communicate()[0].decode("Utf-8")
         elif dist == 'Fedora' or dist == 'openSUSE project':
             p1 = Popen(['rpm', '-qa'], stdout=PIPE).communicate()[0].decode("Utf-8")
         elif dist == 'Ubuntu' or dist == 'Debian' or dist == 'LinuxMint' or dist == 'CrunchBang':
