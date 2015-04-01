@@ -508,9 +508,11 @@ class Disk:
         elif dist == 'OpenBSD':
             p0 = Popen(['df', '-klP'], stdout=PIPE)
             p1 = Popen(['awk', 'BEGIN{s=0;u=0;} {s+=$2; u+=$3} END {print u, s}'], stdin=p0.stdout, stdout=PIPE).communicate()[0].decode("Utf-8").split()
-            used = int(p1[0])//1024
-            size = int(p1[1])//1024//1024
-            usedpercent = ((float(used//1024) / float(size)) * 100)
+            used = round(int(p1[0])/1024/1024, 2)
+            size = round(int(p1[1])/1024/1024, 2)
+            usedpercent = ((float(used) / float(size)) * 100)
+            used = str(used) + ' GB'
+            size = str(size) + ' GB'
         else:
             p1 = Popen(['df', '-Tlh', '--total', '-t', 'ext4', '-t', 'ext3', '-t', 'ext2', '-t', 'reiserfs', '-t', 'jfs', '-t', 'ntfs', '-t', 'fat32', '-t', 'btrfs', '-t', 'fuseblk', '-t', 'xfs'], stdout=PIPE).communicate()[0].decode("Utf-8")
             total = p1.splitlines()[-1]
