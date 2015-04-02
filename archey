@@ -16,11 +16,11 @@
 
 # Import libraries
 
-import os, sys, subprocess, argparse, re
+import os, sys, subprocess, argparse, re, time
 from subprocess import Popen, PIPE
 from argparse import ArgumentParser
 from getpass import getuser
-from time import ctime, sleep
+from datetime import timedelta
 
 #--------------Arguments--------------#
 
@@ -354,23 +354,20 @@ class User:
 
 class Hostname:
     def __init__(self):
-        hostname = Popen(['uname', '-n'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
         self.key = 'Hostname'
-        self.value = hostname
+        self.value = os.uname().nodename
 
 class OS:
     def __init__(self):
 
-        if dist == 'FreeBSD':
-            OS = 'FreeBSD'
-        elif dist == 'Arch':
+        if dist == 'Arch':
             OS =  'Arch Linux'
         elif dist == 'openSUSE project':
             OS = 'openSUSE'
         else:
             OS = dist
 
-        arch = Popen(['uname', '-m'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+        arch = os.uname().machine
         OS = OS + ' ' + arch
 
         self.key = 'OS'
@@ -378,33 +375,24 @@ class OS:
 
 class Kernel:
     def __init__(self):
-        kernel = Popen(['uname', '-sr'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
         self.key = 'Kernel'
-        self.value = kernel
+        self.value = os.uname().sysname + ' ' + os.uname().release
 
 class Uptime:
     def __init__(self):
         if dist == 'FreeBSD':
             boottime = Popen(['sysctl', '-n',  'kern.boottime'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n').split()[3]
-            currtime = Popen(['date', '+%s'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+            currtime = int(time.time())
             fuptime =int(currtime) - int(re.sub(',', '', boottime))
         elif dist == 'OpenBSD':
             boottime = Popen(['sysctl', '-n',  'kern.boottime'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
-            currtime = Popen(['date', '+%s'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+            currtime = int(time.time())
             fuptime =int(currtime) - int(re.sub(',', '', boottime))
         else:
             fuptime = int(open('/proc/uptime').read().split('.')[0])
-        day = int(fuptime / 86400)
-        fuptime = fuptime % 86400
-        hour = int(fuptime / 3600)
-        fuptime = fuptime % 3600
-        minute = int(fuptime / 60)
-        uptime = ''
-        if day == 1:
-            uptime += '%d day, ' % day
-        if day > 1:
-            uptime += '%d days, ' % day
-        uptime += '%d:%02d' % (hour, minute)
+
+        uptime = timedelta(seconds=fuptime)
+
         self.key = 'Uptime'
         self.value = uptime
 
