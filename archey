@@ -16,11 +16,18 @@
 
 # Import libraries
 
-import os, sys, subprocess, optparse, re, linecache
+import os, sys, subprocess, argparse, re
 from subprocess import Popen, PIPE
-from optparse import OptionParser
+from argparse import ArgumentParser
 from getpass import getuser
 from time import ctime, sleep
+
+#--------------Arguments--------------#
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-a", help="select the ascii art to display")
+args = parser.parse_args()
+
 
 #---------------Output---------------#
 
@@ -303,12 +310,13 @@ logosDict = {'Arch Linux': '''{color[1]}
 dist = ''
 if os.path.exists('/bin/freebsd-version'):
     dist = 'FreeBSD'
-elif Popen(['uname', '-s'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n') == 'OpenBSD':
-    dist = 'OpenBSD'
 elif os.path.exists('/bin/cygcheck.exe'):
     dist = 'Cygwin'
-else:
+elif os.path.exists('/etc/lsb-release'):
     dist = Popen(['lsb_release', '-is'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+else:
+    dist = Popen(['uname', '-s'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+
 
 if dist=='Debian' and os.path.exists('/etc/lsb-release-crunchbang'):
     dist='CrunchBang'
@@ -328,7 +336,10 @@ class Output:
     results = []
 
     def __init__(self):
-        self.distro = dist + ' Linux' if dist == 'Arch' else dist
+        if not args.a:
+            self.distro = dist + ' Linux' if dist == 'Arch' else dist
+        else:
+            self.distro = args.a 
 
     def append(self, display):
         self.results.append('%s%s: %s%s' % (colorDict[self.distro][1], display.key, colorDict['Clear'][0], display.value))
