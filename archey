@@ -334,7 +334,10 @@ elif os.path.exists('/bin/cygcheck.exe'):
 elif os.path.exists('/etc/lsb-release'):
     dist = Popen(['lsb_release', '-is'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
 elif os.path.exists('/etc/os-release'):
-    dist = 'Raspbian'
+    with open('/etc/os-release','r') as osr:
+        for line in osr:
+            if re.match('ID=', line):
+                dist=line[3:].rstrip('\n').title()
 else:
     dist = Popen(['uname', '-s'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
 
@@ -508,6 +511,7 @@ class RAM:
             used = ram[2]
             total = ram[1]
         usedpercent = ((float(used) / float(total)) * 100)
+
         if usedpercent <= 33:
             ramdisplay = '%s%s MB %s/ %s MB' % (colorDict['Sensors'][1], used, colorDict['Clear'][0], total)
         if usedpercent > 33 and usedpercent < 67:
