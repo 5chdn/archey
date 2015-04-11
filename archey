@@ -112,7 +112,8 @@ wmDict = {
     'wmfs': 'Wmfs',
     'wmii': 'wmii',
     'xfwm4': 'Xfwm',
-    'xmonad': 'xmonad'
+    'xmonad': 'xmonad',
+    'gnome-shell': 'Mutter'
     }
 
 logosDict = {'Arch Linux': '''{color[1]}
@@ -339,13 +340,13 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[0]}       q@@@@@@@@@@@@@@@@@@/  {results[10]}
 {color[0]}     _@@@@@@@@@@@@@@@@#@@    {results[11]}
 {color[0]}    q@@@@@@@@@@@@@@@#@##^    {results[12]}
-{color[0]}   m#@@@@@@@@@@@@@@#@#W     
-{color[0]}  _q@@@@@@@@@@@@@#@#*>      
-{color[0]}   p@@@@@@@@@@@#@##%        
-{color[0]}    _##@@@@@##@#@#g         
-{color[0]}      _#@@@@@@#@@           
-{color[0]}        _p@@@@q 
-\x1b[0m'''                             
+{color[0]}   m#@@@@@@@@@@@@@@#@#W
+{color[0]}  _q@@@@@@@@@@@@@#@#*>
+{color[0]}   p@@@@@@@@@@@#@##%
+{color[0]}    _##@@@@@##@#@#g
+{color[0]}      _#@@@@@@#@@
+{color[0]}        _p@@@@q
+\x1b[0m'''
 ,'OpenBSD':'''{color[0]}
 {color[0]}               |    .            {results[0]}
 {color[0]}           .   |L  /|   .        {results[1]}
@@ -443,7 +444,7 @@ class Output:
         if not args.a:
             self.distro = dist + ' Linux' if dist == 'Arch' else dist
         else:
-            self.distro = args.a 
+            self.distro = args.a
 
     def append(self, display):
         self.results.append('%s%s: %s%s' % (colorDict[self.distro][1], display.key, colorDict['Clear'][0], display.value))
