@@ -594,7 +594,7 @@ class RAM:
             raminfo = Popen(['vmstat'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
             ram = raminfo[2].split()
             used = int(ram[3])//1024
-            total = int(ram[4])//1024
+            total = (int(ram[3])+int(ram[4]))//1024
         elif dist == 'OpenBSD':
             p0 = Popen(['top', '-d1'],stdout=PIPE)
             p1 = Popen(['awk', '/Memory/{gsub(/[KMGT]/,""); gsub(/\//, " "); print $3, $4, $8}'], stdin=p0.stdout, stdout=PIPE).communicate()[0].decode("Utf-8").split()
