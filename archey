@@ -102,6 +102,7 @@ wmDict = {
     'i3': 'i3',
     'icewm': 'IceWM',
     'kwin': 'KWin',
+    'marco': 'Marco',
     'metacity': 'Metacity',
     'musca': 'Musca',
     'nemo': 'Nemo',
@@ -426,7 +427,7 @@ elif os.path.exists('/etc/os-release'):
     with open('/etc/os-release','r') as osr:
         for line in osr:
             if re.match('ID=', line):
-                dist=line[3:].rstrip('\n').title()
+                dist=line[3:].rstrip('\n').strip('"').title()
 else:
     dist = Popen(['uname', '-s'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
 
