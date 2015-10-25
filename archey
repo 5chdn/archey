@@ -551,8 +551,7 @@ class Shell:
 class Terminal:
     def __init__(self):
         self.key = 'Terminal'
-        self.tmux = ' (tmux)' if os.getenv('TMUX') else ''
-        self.value = os.getenv('TERM') + self.tmux
+        self.value = os.getenv('TERM')
 
 class Packages:
     def __init__(self):
