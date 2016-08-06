@@ -583,8 +583,8 @@ class CPU:
             file = Popen(['sysctl', '-n','hw'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
             cpuinfo = re.sub('  +', ' ', file[1].replace('model name\t: ', '').rstrip('\n'))
         else:
-            file = Popen(['grep', '-i', 'model name\t: ', '/proc/cpuinfo'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
-            cpuinfo = re.sub('  +', ' ', file[0].replace('model name\t: ', ''))
+            file = Popen(['grep', '-i', 'model name', '/proc/cpuinfo'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
+            cpuinfo = re.sub('model name +: +', '', file[0])
         self.key = 'CPU'
         self.value = cpuinfo
 
@@ -640,7 +640,7 @@ class Disk:
             used = str(used) + ' GB'
             size = str(size) + ' GB'
         else:
-            p1 = Popen(['df', '-Tlh', '--total', '-t', 'ext4', '-t', 'ext3', '-t', 'ext2', '-t', 'reiserfs', '-t', 'jfs', '-t', 'ntfs', '-t', 'fat32', '-t', 'btrfs', '-t', 'fuseblk', '-t', 'xfs'], stdout=PIPE).communicate()[0].decode("Utf-8")
+            p1 = Popen(['df', '-Tlh', '--total', '-t', 'rootfs', '-t', 'ext4', '-t', 'ext3', '-t', 'ext2', '-t', 'reiserfs', '-t', 'jfs', '-t', 'ntfs', '-t', 'fat32', '-t', 'btrfs', '-t', 'fuseblk', '-t', 'xfs'], stdout=PIPE).communicate()[0].decode("Utf-8")
             total = p1.splitlines()[-1]
             used = total.split()[3]
             size = total.split()[2]
