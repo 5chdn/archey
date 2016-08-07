@@ -584,7 +584,7 @@ class CPU:
             cpuinfo = re.sub('  +', ' ', file[1].replace('model name\t: ', '').rstrip('\n'))
         else:
             file = Popen(['grep', '-i', 'model name', '/proc/cpuinfo'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
-            cpuinfo = re.sub('model name +: +', '', file[0])
+            cpuinfo = re.sub('model name\s+:\s+', '', file[0])
         self.key = 'CPU'
         self.value = cpuinfo
 
