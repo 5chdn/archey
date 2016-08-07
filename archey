@@ -467,9 +467,12 @@ class Output:
             self.distro = args.a
 
     def append(self, display):
-        self.results.append('%s%s: %s%s' % (colorDict[self.distro][1], display.key, colorDict['Clear'][0], display.value))
+        if display.value:
+            self.results.append('%s%s: %s%s' % (colorDict[self.distro][1], display.key, colorDict['Clear'][0], display.value))
 
     def output(self):
+        if len(self.results) < 13:
+            self.results += [""] * (13 - len(self.results))
         print(logosDict[self.distro].format(color = colorDict[self.distro], results = self.results))
 
 class User:
